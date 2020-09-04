@@ -1,8 +1,8 @@
 import itertools
 
 def strip_list(xs, e):
-    p = len(xs) - 1:
-    while xs[p] == e:
+    p = len(xs) - 1
+    while p>=0 and xs[p] == e:
         p -= 1
     return xs[:p+1]
 
@@ -41,7 +41,7 @@ class Polynomial:
         """Evaluate at x using Horner's method"""
         total = 0
         for e in reversed(self._coefficients):
-            total += total*x + e
+            total = total*x + e
         return total
 
     def add(self, other):
