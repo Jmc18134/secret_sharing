@@ -47,8 +47,7 @@ class Polynomial:
         return total
 
     def add(self, other):
-        new_coeffs = (a+b for (a, b) in itertools.zip_longest(
-            self._coefficients, other._coefficents, fillvalue=0))
+        new_coeffs = [sum(pair) for pair in itertools.zip_longest(self, other, fillvalue=0)]
         return Polynomial(new_coeffs)
 
     def multiply(self, other):
@@ -59,6 +58,18 @@ class Polynomial:
                 new_coefficients[i+j] += a*b
 
         return Polynomial(strip_list(new_coefficients, 0))
+
+    def len(self):
+        return len(self._coefficients)
+
+    def coefficients(self):
+        return list(self._coefficients)
+
+    def __iter__(self):
+        return iter(self._coefficients)
+
+    def __len__(self):
+        return self.len()
 
     def __mul__(self, other):
         return self.multiply(other)
