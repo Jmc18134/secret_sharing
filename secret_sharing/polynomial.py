@@ -1,15 +1,17 @@
+"""The class and functions for representing Polynomials"""
+
 import itertools
 
 def strip_list(xs, e):
     p = len(xs) - 1
-    while p>=0 and xs[p] == e:
+    while p >= 0 and xs[p] == e:
         p -= 1
     return xs[:p+1]
 
 class Polynomial:
     @classmethod
     def _single_term(cls, points, i):
-        term = Polynomial([1.])
+        the_term = Polynomial([1.])
         xi, yi = points[i]
 
         for j, p in enumerate(points):
@@ -24,7 +26,7 @@ class Polynomial:
     def interpolating(cls, points):
         """Construct the interpolating polynomial for
         points, which is an iterable of (x, y) tuples"""
-        if len(points) == 0:
+        if not points:
             raise ValueError('Must provide at least one point.')
 
         x_values = [p[0] for p in points]
@@ -45,7 +47,7 @@ class Polynomial:
         return total
 
     def add(self, other):
-        new_coeffs = (a+b for (a,b) in itertools.zip_longest(
+        new_coeffs = (a+b for (a, b) in itertools.zip_longest(
             self._coefficients, other._coefficents, fillvalue=0))
         return Polynomial(new_coeffs)
 
@@ -56,8 +58,8 @@ class Polynomial:
             for j, b in enumerate(other):
                 new_coefficients[i+j] += a*b
 
-        return Polynomial(strip(new_coefficients, 0))
-    
+        return Polynomial(strip_list(new_coefficients, 0))
+
     def __mul__(self, other):
         return self.multiply(other)
 
