@@ -1,4 +1,4 @@
-from secret_sharing.polynomial import Polynomial, ZERO
+from secret_sharing.polynomial import *
 
 import pytest
 
@@ -22,4 +22,26 @@ def test_evaluation(coefficients, x, expected):
 def test_interpolation(points):
     tester = Polynomial.interpolating(points)
     for (x,y) in points:
-        assert(tester(x) == pytest.approx(y))
+        assert tester(x) == pytest.approx(y)
+
+@pytest.mark.parametrize("first,second,result",
+        [
+            ([1, 1, 1], [1, 1, 1], [2, 2, 2]),
+            ([1, 1, 1], [1, 1, 1, 1], [2, 2, 2, 1]),
+            ([1, 1, 1], [1, -1, 1], [2, 0, 2]),
+            ([0], [1, 1, 1], [1, 1, 1]),
+            ([0], [0], [0]),
+        ])
+def test_addition(first, second, result):
+    a = Polynomial(first)
+    b = Polynomial(second)
+    assert (a + b).coefficients() == result
+
+@pytest.mark.parametrize("xs,expected",
+        [
+            ([1, 2, 3, 0, 0], [1, 2, 3]),
+            ([1, 2, 3], [1, 2, 3]),
+            ([0, 0, 0], [])
+        ])
+def test_list_strip(xs, expected):
+    assert strip_list(xs, 0) == expected

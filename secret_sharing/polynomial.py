@@ -38,6 +38,8 @@ class Polynomial:
 
     def __init__(self, coefficients):
         self._coefficients = strip_list(coefficients, 0)
+        if not self._coefficients:
+            self._coefficients = [0]
 
     def eval_at(self, x):
         """Evaluate at x using Horner's method"""
@@ -52,7 +54,6 @@ class Polynomial:
 
     def multiply(self, other):
         new_coefficients = [0] * (len(self) + len(other) - 1)
-
         for i, a in enumerate(self):
             for j, b in enumerate(other):
                 new_coefficients[i+j] += a*b
