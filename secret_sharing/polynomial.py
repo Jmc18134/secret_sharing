@@ -52,6 +52,9 @@ class Polynomial:
         new_coeffs = [sum(pair) for pair in itertools.zip_longest(self, other, fillvalue=0)]
         return Polynomial(new_coeffs)
 
+    def sub(self, other):
+        return self.add(self, -other)
+
     def multiply(self, other):
         new_coefficients = [0] * (len(self) + len(other) - 1)
         for i, a in enumerate(self):
@@ -74,6 +77,12 @@ class Polynomial:
 
     def __mul__(self, other):
         return self.multiply(other)
+
+    def __sub__(self, other):
+        return self.sub(other)
+
+    def __neg__(self):
+        return Polynomial([-c for c in self._coefficients])
 
     def __add__(self, other):
         return self.add(other)

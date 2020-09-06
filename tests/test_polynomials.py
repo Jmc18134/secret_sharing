@@ -45,3 +45,15 @@ def test_addition(first, second, result):
         ])
 def test_list_strip(xs, expected):
     assert strip_list(xs, 0) == expected
+
+@pytest.mark.parametrize("first,second,result",
+        [
+            ([1, 1, 1], [1, 1, 1], [0]),
+            ([1, 1, 1], [2, 2, 2], [-1, -1, -1]),
+            ([1, 1, 1], [1, 1, 1, -2], [0, 0, 0, -2]),
+            ([0], [0], [0]),
+        ])
+def test_subtraction(first, second, result):
+    a = Polynomial(first)
+    b = Polynomial(second)
+    assert (a - b).coefficients() == result
