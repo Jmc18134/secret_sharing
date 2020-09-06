@@ -1,22 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Page Title</title>
+<title>Results</title>
 </head>
 <body>
 
-<h1>This is a Heading</h1>
-<p>This is a paragraph.</p>
+<h1>Secret shares:</h1>
+<p>Mouse over each of the k squares to reveal that share.</p>
 
-<form method="post">
-  <label for="shares">Number of shares:</label><br>
-  <input type="text" id="shares" name="shares"><br>
-  <label for="keys_required">Number of shares needed to decode:</label><br>
-  <input type="text" id="keys_required" name="keys_required"><br><br>
-  <label for="secret">Secret to encode:</label><br>
-  <input type="text" id="secret" name="secret"><br><br>
-  <input type="submit" value="Submit">
-</form> 
+<table id="results_table">
+	<tr>
+		{% for share in shares %}
+		<th>share</th>
+		{% endfor %}
+	</tr>
+</table>
 
 {% for message in get_flashed_messages() %}
     <div class="flash">{{ message }}</div>
