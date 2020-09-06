@@ -53,7 +53,7 @@ class Polynomial:
         return Polynomial(new_coeffs)
 
     def sub(self, other):
-        return self.add(self, -other)
+        return self.add(-other)
 
     def multiply(self, other):
         new_coefficients = [0] * (len(self) + len(other) - 1)
