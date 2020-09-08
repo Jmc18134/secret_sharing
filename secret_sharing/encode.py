@@ -38,7 +38,6 @@ def show_results():
     # TODO: Fix this, sort out how the polynomials are actually represented
     rand_poly = Polynomial.secret(n, k, secret)
     shares = [rand_poly.mod_eval(i) for i in range(1, n+1)]
-    
+    ''' 
+    shares = [1,2,3,4,5]
     return render_template('results.html', shares=shares)
-    '''
-    return b"Hello, world!"
