@@ -2,7 +2,22 @@
 
 import itertools
 
-import mod
+def extended_gcd(a, b):
+    x = 0
+    y = 1
+    last_x = 1
+    last_y = 0
+
+    while b != 0:
+        quot = a // b
+        a, b = b, a % b
+        x, last_x = last_x - quot * x, x
+        y, last_y = last_y - quot * y, y
+    return last_x, last_y
+
+def modp_div(a, b, p):
+    inv, _ = extended_gcd(b, p)
+    return a * inv
 
 def strip_list(xs, e):
     p = len(xs) - 1
@@ -11,6 +26,7 @@ def strip_list(xs, e):
     return xs[:p+1]
 
 class Polynomial:
+    # TODO: Add modular construction!
     @classmethod
     def _single_term(cls, points, i):
         the_term = Polynomial([1])
@@ -54,13 +70,8 @@ class Polynomial:
         """Evaluate the polynomial at x,
         computing modulo p"""
 
-        if not isinstance(x, int):
-            raise TypeError("Modular arithmetic is only for integers")
-
         total = 0
         for e in reversed(self._coefficients):
-            if not isinstance(e, int):
-                raise TypeError("Modular eval does not work for integer coefficients")
             total = (total*x % p) + e
         return total % p
 

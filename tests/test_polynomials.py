@@ -58,7 +58,6 @@ def test_subtraction(first, second, result):
     b = Polynomial(second)
     assert (a - b).coefficients() == result
 
-
 @pytest.mark.parametrize("ys,x,modulus,result",
         [
             ([0, 2, 3], 9, 7, 2),
