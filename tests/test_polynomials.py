@@ -57,3 +57,15 @@ def test_subtraction(first, second, result):
     a = Polynomial(first)
     b = Polynomial(second)
     assert (a - b).coefficients() == result
+
+
+@pytest.mark.parametrize("ys,x,modulus,result",
+        [
+            ([0, 2, 3], 9, 7, 2),
+            ([1, 0, 0, 1], 3, 6, 4),
+        ])
+def test_modeval(ys, x, modulus, result):
+    p = Polynomial(ys)
+    assert p.eval_modp(x, modulus) == result
+
+

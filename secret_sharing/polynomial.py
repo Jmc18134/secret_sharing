@@ -2,6 +2,8 @@
 
 import itertools
 
+import mod
+
 def strip_list(xs, e):
     p = len(xs) - 1
     while p >= 0 and xs[p] == e:
@@ -11,7 +13,7 @@ def strip_list(xs, e):
 class Polynomial:
     @classmethod
     def _single_term(cls, points, i):
-        the_term = Polynomial([1.])
+        the_term = Polynomial([1])
         xi, yi = points[i]
 
         for j, p in enumerate(points):
@@ -19,7 +21,7 @@ class Polynomial:
                 continue
 
             xj = p[0]
-            the_term = the_term * Polynomial([-xj / (xi - xj), 1.0 / (xi - xj)])
+            the_term = the_term * Polynomial([-xj / (xi - xj), 1 / (xi - xj)])
         return the_term * Polynomial([yi])
 
     @classmethod
@@ -47,6 +49,20 @@ class Polynomial:
         for e in reversed(self._coefficients):
             total = total*x + e
         return total
+
+    def eval_modp(self, x, p):
+        """Evaluate the polynomial at x,
+        computing modulo p"""
+
+        if not isinstance(x, int):
+            raise TypeError("Modular arithmetic is only for integers")
+
+        total = 0
+        for e in reversed(self._coefficients):
+            if not isinstance(e, int):
+                raise TypeError("Modular eval does not work for integer coefficients")
+            total = (total*x % p) + e
+        return total % p
 
     def add(self, other):
         new_coeffs = [sum(pair) for pair in itertools.zip_longest(self, other, fillvalue=0)]
