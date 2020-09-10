@@ -68,3 +68,11 @@ def test_modeval(ys, x, modulus, result):
     assert p.eval_modp(x, modulus) == result
 
 
+@pytest.mark.parametrize("ys,p,r",
+        [
+            ([(1,6), (2, 2), (3, 6)], 11, 7),
+            ([(1,10), (2, 5), (3, 8)], 13, 10),
+        ])
+def test_modinterp(ys, p, r):
+    poly = Polynomial.interpolating(ys)
+    assert poly.eval_modp(0, p) == r

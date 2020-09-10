@@ -26,7 +26,6 @@ def strip_list(xs, e):
     return xs[:p+1]
 
 class Polynomial:
-    # TODO: Add modular construction!
     @classmethod
     def _single_term(cls, points, i):
         the_term = Polynomial([1])
@@ -43,7 +42,11 @@ class Polynomial:
     @classmethod
     def interpolating(cls, points):
         """Construct the interpolating polynomial for
-        points, which is an iterable of (x, y) tuples"""
+        points, which is an iterable of (x, y) tuples
+
+        If p is not None, the polynomial
+        will be constructed modulo p
+        """
         if not points:
             raise ValueError('Must provide at least one point.')
 
