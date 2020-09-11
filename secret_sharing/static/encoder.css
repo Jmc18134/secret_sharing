@@ -1,0 +1,55 @@
+h1 {
+	border-style: double;
+	font-family: monospace;
+	font-size: 30px;
+	text-align: center;
+	border: 2px solid black;
+	outline: #7CAAAF double 10px;
+	margin-bottom: 50px;
+	padding: 5px;
+}
+
+body {
+	background-color: #e7f1f2;
+	margin: 20px 20px 20px 20px;
+}
+
+form {
+	margin: 0px;
+}
+
+form label {
+	font-family: monospace;
+	font-size: 20px;
+}
+
+form input[type=number] {
+	line-height: 2em;
+}
+
+form [type=submit] {
+	font-weight: bold;
+	text-decoration: underline;
+	font-size: 16px;
+	display: block;
+}
+
+form div.input_labels {
+	float: left;
+	margin-right: 30px;
+}
+
+form div.input_labels label {
+	display: block;
+}
+
+form div.input_boxes input {
+	display: block;
+}
+
+div.flash, div.errmsg {
+	padding: 10px 0px 10px 2px;
+	font-size: 18px;
+	text-decoration: underline;
+	color: red;
+}
