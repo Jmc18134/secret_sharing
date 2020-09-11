@@ -1,7 +1,10 @@
 import functools
+import secrets
 
 from flask import Blueprint, flash, g, redirect, render_template, request, session, url_for
 from werkzeug.exceptions import abort
+
+from polynomial import Polynomial
 
 bp = Blueprint('encode', __name__)
 
@@ -34,10 +37,14 @@ def show_results():
     if error is not None:
         flash(error)
 
-    '''
-    # TODO: Fix this, sort out how the polynomials are actually represented
-    rand_poly = Polynomial.secret(n, k, secret)
-    shares = [rand_poly.mod_eval(i) for i in range(1, n+1)]
-    ''' 
-    shares = [1,2,3,4,5]
-    return render_template('results.html', shares=shares)
+    # Get a prime larger than the secret and the number of shares
+    prime = get_prime(max(n,d))
+    # Generate random coefficients less than the prime modulus
+    coefficients = [secrets.randbelow(prime) for _ in range(k-1)]
+    coefficients.insert(0, secret)
+
+    poly = Polynomial(coefficients)
+
+    # Generate a share (x, f(x)) evaluated mod p for each n
+    shares = [(x, poly.eval_modp(x, prime)) for x in range(1, n+1)]
+    return render_template('results.html', shares=shares, prime=prime)

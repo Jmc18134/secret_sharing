@@ -1,24 +1,28 @@
 <!DOCTYPE html>
 <html>
-<head>
-<title>Results</title>
-</head>
-<body>
+	<head>
+		<title>Results</title>
+	</head>
+	<body>
 
-<h1>Secret shares:</h1>
-<p>Mouse over each of the k squares to reveal that share.</p>
+		<h1>Secret shares:</h1>
+		<p>Mouse over each of the k squares to reveal that share.</p>
 
-<table id="results_table">
-	<tr>
-		{% for share in shares %}
-		<th>{{ share }}</th>
+		<table id="results_table">
+			<tr>
+				{% for share in shares %}
+				<th class="share">{{ share }}</th>
+				{% endfor %}
+			</tr>
+		</table>
+
+		<p><strong>
+			The prime <span id="prime">p</span> for this scheme is: {{ prime }}<br>
+			Remember to use this when computing the secret!
+		</strong></p>
+
+		{% for message in get_flashed_messages() %}
+		<div class="flash">{{ message }}</div>
 		{% endfor %}
-	</tr>
-</table>
-
-{% for message in get_flashed_messages() %}
-    <div class="flash">{{ message }}</div>
-{% endfor %}
-
-</body>
+	</body>
 </html> 
