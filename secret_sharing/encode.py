@@ -4,9 +4,12 @@ import secrets
 from flask import Blueprint, flash, g, redirect, render_template, request, session, url_for
 from werkzeug.exceptions import abort
 
-from polynomial import Polynomial
+from secret_sharing.polynomial import Polynomial
 
 bp = Blueprint('encode', __name__)
+
+def get_prime(n):
+    return 197
 
 @bp.route('/', methods=("GET", "POST"))
 def encode_secret():
@@ -34,11 +37,15 @@ def show_results():
     if not (n and k and secret):
         error = 'All fields must be filled in!'
 
+    n = int(n)
+    k = int(k)
+    secret = int(secret)
+
     if error is not None:
         flash(error)
 
     # Get a prime larger than the secret and the number of shares
-    prime = get_prime(max(n,d))
+    prime = get_prime(max(n,k))
     # Generate random coefficients less than the prime modulus
     coefficients = [secrets.randbelow(prime) for _ in range(k-1)]
     coefficients.insert(0, secret)
