@@ -12,6 +12,6 @@ bp = Blueprint('interp', __name__, url_prefix='/interpolator')
 def interpolate():
     return render_template('interpolate.html')
 
-@bp.route('/res', methods=("GET", "POST"))
-def res():
+@bp.route('/results', methods=("GET", "POST"))
+def show_results():
     return render_template('interpolate.html')

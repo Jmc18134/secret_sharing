@@ -2,11 +2,13 @@
 <html>
 	<head>
 		<title>Results</title>
+		<link rel="stylesheet" href={{ url_for('static', filename='encoder.css') }}>
 	</head>
 	<body>
 
-		<h1>Secret shares:</h1>
-		<p>Mouse over each of the k squares to reveal that share.</p>
+		<h1>Secret Shares:</h1>
+		<p class="intro-p">These are the {{ n }} shares for this secret. Any {{ k }} of these points may be interpolated to construct the polynomial <span class="symbol">f</span> where <span class="symbol">f(0) = secret</span></p>
+		<p class="exp-p">Mouse over each of the k squares to reveal that share.</p>
 
 		<table id="results_table">
 			<tr>
@@ -16,10 +18,12 @@
 			</tr>
 		</table>
 
-		<p><strong>
-			The prime <span id="prime">p</span> for this scheme is: {{ prime }}<br>
+		<p class="exp-p"><strong>
+			The prime <span class="symbol">p</span> for this scheme is: {{ prime }}<br>
 			Remember to use this when computing the secret!
 		</strong></p>
+
+		<p class="other-pages">You can interpolate these points using the <a href={{ url_for('interp.interpolate') }}>interpolation calculator</a>. You can also go back and <a href={{ url_for('encode.encode_secret') }}>encode another secret</a>.</p>
 
 		{% for message in get_flashed_messages() %}
 		<div class="flash">{{ message }}</div>

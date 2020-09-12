@@ -2,20 +2,25 @@
 <html>
 	<head>
 		<title>Interpolate</title>
+		<link rel="stylesheet" href={{ url_for('static', filename='encoder.css') }}>
 		<script src={{ url_for('static', filename='interp_check.js') }} async></script>
 	</head>
 
 	<body>
 		<h1>Interpolation Calculator</h1>
-		<p>
-		Given a list of <span class="symbol">n</span> points, this calculator will use Lagrange interpolation to calculate the unique <span class="symbol">n-1</span> degree polynomial passing through those points.
+		<p class="intro-p">
+		Given a list of <span class="symbol">n</span> points, this calculator will use Lagrange interpolation to calculate the unique <span class="symbol">n</span>-1 degree polynomial passing through those points.
 		</p>
 
-		<p>Enter the points as x,y pairs seperated by spaces - i.e: "3,4 5,9 11,3"</p>
+		<p class="exp-p">Enter the points as x,y pairs seperated by spaces - i.e: "3,4 5,9 11,3"</p>
 
 		<form name="interp" id="interp" method="post" action={{ url_for('interp.interpolate') }}>
-			<label for="points">Points:</label><br>
-			<input type="string" id="points" name="points"><br>
+			<div class="input_labels">
+				<label for="points">Points:</label>
+			</div>
+			<div class="input_boxes">
+				<input type="string" id="points" name="points">
+			</div>
 			<input type="submit" value="Submit">
 		</form>
 		<div class="errmsg" id="input_error"></div>
