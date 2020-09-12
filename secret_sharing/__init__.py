@@ -26,4 +26,8 @@ def create_app(test_config=None):
     app.register_blueprint(encode.bp)
     app.add_url_rule('/', endpoint='encode_secret')
 
+    from . import interpolate
+    app.register_blueprint(interpolate.bp)
+    app.add_url_rule('/interpolator', endpoint='interpolate')
+
     return app

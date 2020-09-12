@@ -13,7 +13,7 @@
 
 		<p>Enter the points as x,y pairs seperated by spaces - i.e: "3,4 5,9 11,3"</p>
 
-		<form name="interp" id="interp" method="post" action={{ url_for('encode.interp_result') }}>
+		<form name="interp" id="interp" method="post" action={{ url_for('interp.interpolate') }}>
 			<label for="points">Points:</label><br>
 			<input type="string" id="points" name="points"><br>
 			<input type="submit" value="Submit">
