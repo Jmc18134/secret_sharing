@@ -11,20 +11,8 @@ bp = Blueprint('encode', __name__)
 def get_prime(n):
     return 197
 
-@bp.route('/', methods=("GET", "POST"))
+@bp.route('/', methods=("GET",))
 def encode_secret():
-    if request.method == 'POST':
-        n = request.form['shares']
-        k = request.form['keys_required']
-        secret = request.form['secret']
-
-        error = None
-        if not (n and k and secret):
-            error = 'All fields must be filled in!'
-
-        if error is not None:
-            flash(error)
-        return render_template('encode_secret.html')
     return render_template('encode_secret.html')
 
 @bp.route('/results', methods=("POST",))
