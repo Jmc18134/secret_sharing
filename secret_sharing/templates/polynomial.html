@@ -10,7 +10,7 @@
 		<h1>Your Polynomial:</h1>
 		<p class="intro-p">As this polynomial has the secret as its root, it is hidden. Click the the box below to reveal it.</p>
 		<div class="poly-container"><div class="polynomial">{{ polynomial_string }}</div></div>
-		<p class="exp-p">Press Eval to evaluate the polynomial <span class"symbol">f</span> at the given <span class"symbol">x</span>, optionally computing using the given modulus. To find the secret for a secret-sharing polynomial, evaluate it at <span class"symbol">x</span>=0 and use the modulus (if any) it was constructed with.</p>
+		<p class="exp-p">Press Eval to evaluate the polynomial <span class="symbol">f</span> at the given <span class="symbol">x</span>, optionally computing using the given modulus. To find the secret for a secret-sharing polynomial, evaluate it at <span class="symbol">x</span>=0 and use the modulus (if any) it was constructed with.</p>
 		<form name="eval" id="eval" method="post" action={{ url_for('interp.evaluate') }}>
 			<div class="input_labels">
 				<label for="x-val">x:</label>
