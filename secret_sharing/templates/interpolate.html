@@ -14,7 +14,7 @@
 
 		<p class="exp-p">Enter the points as x,y pairs seperated by spaces - i.e: "3,4 5,9 11,3"</p>
 
-		<form name="interp" id="interp" method="post" action={{ url_for('interp.interpolate') }}>
+		<form name="interp" id="interp" method="post" action={{ url_for('interp.show_results') }}>
 			<div class="input_labels">
 				<label for="points">Points:</label>
 			</div>
@@ -27,9 +27,10 @@
 
 		<p class=other-pages>You can generate points for a given secret using the <a href={{ url_for('encode.encode_secret') }}>secret encoder</a>.</p>
 
-
-		{% for message in get_flashed_messages() %}
-		<div class="flash">{{ message }}</div>
+		{% with messages = get_flashed_messages() %}
+		{% for message in messages %}
+		<div class="flash"><p>{{ message }}</p></div>
 		{% endfor %}
+		{% endwith %}
 	</body>
 </html> 

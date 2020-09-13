@@ -48,6 +48,6 @@ function validate(ev) {
   if (!valid) {
     ev.preventDefault();
   } else {
-    err_msg = "";
+    err_msg.innerHTML = "";
   }
 }
