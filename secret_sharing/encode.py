@@ -53,4 +53,4 @@ def show_results():
 
     # Generate a share (x, f(x)) evaluated mod p for each n
     shares = [(x, poly.eval_modp(x, prime)) for x in range(1, n+1)]
-    return render_template('results.html', shares=shares, prime=prime, n=n, k=k)
+    return render_template('encoder_results.html', shares=shares, prime=prime, n=n, k=k)
