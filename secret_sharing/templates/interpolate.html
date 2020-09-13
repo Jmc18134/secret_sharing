@@ -25,6 +25,9 @@
 		</form>
 		<div class="errmsg" id="input_error"></div>
 
+		<p class=other-pages>You can generate points for a given secret using the <a href={{ url_for('encode.encode_secret') }}>secret encoder</a>.</p>
+
+
 		{% for message in get_flashed_messages() %}
 		<div class="flash">{{ message }}</div>
 		{% endfor %}
