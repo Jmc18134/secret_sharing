@@ -76,7 +76,40 @@ span.symbol {
 
 div.flash, div.errmsg {
 	padding: 10px 0px 10px 2px;
-	font-size: 18px;
 	text-decoration: underline;
 	color: red;
+}
+
+div.errmsg {
+	font-size: 18px;
+}
+
+
+div.flash {
+	font-size: 22px;
+}
+
+div.scrollable {
+	overflow-x: auto;
+}
+
+table {
+	white-space: nowrap;
+}
+
+table tr {
+	border: solid;
+}
+
+table td {
+	border: solid;
+}
+
+table div.cell-content {
+	color: transparent;
+	font-size: 22px;
+}
+
+table div.cell-content:hover {
+	color: black;
 }

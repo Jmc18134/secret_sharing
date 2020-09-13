@@ -10,13 +10,15 @@
 		<p class="intro-p">These are the {{ n }} shares for this secret. Any {{ k }} of these points may be interpolated to construct the polynomial <span class="symbol">f</span> where <span class="symbol">f(0) = secret</span></p>
 		<p class="exp-p">Mouse over each of the k squares to reveal that share.</p>
 
+		<div class="scrollable">
 		<table id="results_table">
 			<tr>
 				{% for share in shares %}
-				<th class="share">{{ share }}</th>
+				<td class="share"><div class="cell-content">{{ share }}</div></td>
 				{% endfor %}
 			</tr>
 		</table>
+		</div>
 
 		<p class="exp-p"><strong>
 			The prime <span class="symbol">p</span> for this scheme is: {{ prime }}<br>
@@ -26,7 +28,7 @@
 		<p class="other-pages">You can interpolate these points using the <a href={{ url_for('interp.interpolate') }}>interpolation calculator</a>. You can also go back and <a href={{ url_for('encode.encode_secret') }}>encode another secret</a>.</p>
 
 		{% for message in get_flashed_messages() %}
-		<div class="flash">{{ message }}</div>
+		<div class="flash"><strong>{{ message }}</strong></div>
 		{% endfor %}
 	</body>
 </html> 

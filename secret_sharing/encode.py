@@ -21,16 +21,27 @@ def show_results():
     k = request.form['keys_required']
     secret = request.form['secret']
 
-    error = None
+    error = ''
     if not (n and k and secret):
         error = 'All fields must be filled in!'
+    elif n < k:
+        error = 'N must be less than K!'
 
-    n = int(n)
-    k = int(k)
-    secret = int(secret)
+    try:
+        n = int(n)
+        k = int(k)
+        secret = int(secret)
+    except ValueError:
+        error = 'N, K and Secret must be integers!'
+    else:
+        if n < 0 or k < 0 or secret < 0:
+            error = 'All inputs must be greater than 0!'
+        elif n < k:
+            error = 'N must be >= K!'
 
-    if error is not None:
+    if error:
         flash(error)
+        return redirect(url_for('encode.encode_secret'))
 
     # Get a prime larger than the secret and the number of shares
     prime = get_prime(max(n,k))
