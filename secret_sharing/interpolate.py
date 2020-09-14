@@ -18,12 +18,8 @@ def is_ascending(xs):
 def interpolate():
     return render_template('interpolate.html')
 
-@bp.route('/polynomial/eval', methods=("POST",))
+@bp.route('/eval', methods=("POST",))
 def evaluate():
-    return render_template('poly_eval.html')
-
-@bp.route('/polynomial', methods=("POST",))
-def poly():
     points = request.form['points']
 
     error = ''
@@ -43,4 +39,4 @@ def poly():
     if error:
         flash(error)
         return redirect(url_for('interp.interpolate'))
-    return render_template('polynomial.html')
+    return render_template('interp_eval.html')

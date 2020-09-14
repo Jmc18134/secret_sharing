@@ -22,6 +22,24 @@ function checkAscending(xs, err) {
   return true;
 }
 
+function checkModx(modulus, x, err) {
+  if (valid) {
+    var x = parseFloat(x, 10);
+    var y = parseInt(modulus, 10);
+    if (isNaN(x) || isNaN(y)) {
+      err.innerHTML = "X must be a float, the modulus must be a positive integer.";
+      return false;
+    }
+    
+    if (y < 1) {
+      err.innerHTML = "Modulus must be greater than 0.";
+      return false;
+    }
+
+    return true;
+  }
+}
+
 function checkIsInteger(points, err) {
   var i;
   var xs = [];
@@ -29,8 +47,8 @@ function checkIsInteger(points, err) {
   for (i=0; i<split.length; i++) {
     var coord = split[i];
     var elems = coord.split(',');
-    var x = parseInt(elems[0], 0);
-    var y = parseInt(elems[1], 0);
+    var x = parseInt(elems[0], 10);
+    var y = parseInt(elems[1], 10);
     if (isNaN(x) || isNaN(y)) {
       err.innerHTML = "Invalid coordinates.";
       return false;
@@ -43,10 +61,12 @@ function checkIsInteger(points, err) {
 
 function validate(ev) {
   var points = document.getElementById("points").value;
+  var xval = document.getElementById("x-val").value;
+  var modulus = document.getElementById("modulus").value;
   var err_msg = document.getElementById("input_error");
   var valid = true;
 
-  if (points == "") {
+  if (points == "" || xval == "" || modulus == "") {
     err_msg.innerHTML = "All fields must be filled in.";
     valid = false;
   }
@@ -54,6 +74,11 @@ function validate(ev) {
   // Check that the coordinates are all valid integer pairs
   if (valid) {
     valid = checkIsInteger(points, err_msg);
+  }
+ 
+  // Check that the modulus and x-val are OK
+  if (valid) {
+    valid = checkModx(modulus, x);
   }
 
   if (!valid) {
