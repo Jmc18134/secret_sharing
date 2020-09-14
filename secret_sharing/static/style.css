@@ -116,3 +116,37 @@ table div.cell-content {
 table div.cell-content:hover {
 	color: black;
 }
+
+p.important {
+	color: red;
+	text-decoration: bold;
+	font-size: 24px;
+	border: solid;
+}
+
+#ev-p {
+	text-align: center;
+}
+
+div.answer {
+	text-align: center;
+	font-size: 30px;
+	margin-bottom: 100px;
+}
+
+div.polynomial {
+        color: transparent;
+        font-size: 26px;
+	text-align: center;
+	margin: 10px;
+}
+
+div.polynomial:hover {
+        color: black;
+}
+
+div.hide-box {
+	border: solid;
+	overflow-x: auto;
+}
+

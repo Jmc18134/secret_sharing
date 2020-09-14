@@ -66,7 +66,7 @@ function validate(ev) {
   var err_msg = document.getElementById("input_error");
   var valid = true;
 
-  if (points == "" || xval == "" || modulus == "") {
+  if (points == "" || xval == "") {
     err_msg.innerHTML = "All fields must be filled in.";
     valid = false;
   }
@@ -77,7 +77,7 @@ function validate(ev) {
   }
  
   // Check that the modulus and x-val are OK
-  if (valid) {
+  if (valid && modulus != "") {
     valid = checkModx(modulus, x);
   }
 

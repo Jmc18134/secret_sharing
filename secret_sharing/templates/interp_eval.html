@@ -6,26 +6,26 @@
 	</head>
 	<body>
 
-		<h1>Secret Shares:</h1>
-		<p class="intro-p">These are the {{ n }} shares for this secret. Any {{ k }} of these points may be interpolated to construct the polynomial <span class="symbol">f</span> where <span class="symbol">f(0) = secret</span></p>
-		<p class="exp-p">Mouse over each of the k squares to reveal that share.</p>
+		<h1>Your Polynomial:</h1>
+		<p class="intro-p">The Lagrange polynomial <span class="symbol">f</span>
+		for the <span class="symbol">{{ n }}</span> points provided is:</p>
 
-		<div class="scrollable">
-		<table id="results_table">
-			<tr>
-				{% for share in shares %}
-				<td class="share"><div class="cell-content">{{ share }}</div></td>
-				{% endfor %}
-			</tr>
-		</table>
+		<div class="hide-box">
+		<div class="polynomial">
+			{{ base }}
+			{% for coefficient in polynomial %}
+			+ {{ coefficient }}<span class="symbol">x</span><sup>{{ loop.index }}</sup>
+			{% endfor %}
+		</div>
 		</div>
 
-		<p class="exp-p"><strong>
-			The prime <span class="symbol">p</span> for this scheme is: {{ prime }}<br>
-			Remember to use this when computing the secret!
-		</strong></p>
+		<p id="ev-p" class="exp-p">Evaluating this polynomial at 
+		<span class="symbol">x</span>={{ x }}, computing modulo {{ modulus }} gives:
+		</p>
 
-		<p class="other-pages">You can interpolate these points using the <a href={{ url_for('interp.interpolate') }}>interpolation calculator</a>. You can also go back and <a href={{ url_for('encode.encode_secret') }}>encode another secret</a>.</p>
+		<div class="answer"><span class="symbol">f</span>({{ x }}) = <span class="final">{{ answer }}</span></div>
+
+		<p class="other-pages">You can interpolate more points <a href={{ url_for('interp.interpolate') }}>here</a>. You can also generate points to interpolate <a href={{ url_for('encode.encode_secret') }}>here</a>.</p>
 
 		{% for message in get_flashed_messages() %}
 		<div class="flash"><strong>{{ message }}</strong></div>
