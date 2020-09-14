@@ -1,6 +1,8 @@
-"""The class and functions for representing Polynomials"""
+"""The class and functions for representing Modular Polynomials"""
 
 import itertools
+
+from mod import Mod
 
 def extended_gcd(a, b):
     x = 0
@@ -15,7 +17,7 @@ def extended_gcd(a, b):
         y, last_y = last_y - quot * y, y
     return last_x, last_y
 
-def modp_div(a, b, p):
+def modular_div(a, b, p):
     inv, _ = extended_gcd(b, p)
     return a * inv
 
@@ -25,10 +27,10 @@ def strip_list(xs, e):
         p -= 1
     return xs[:p+1]
 
-class Polynomial:
+class ModPolynomial:
     @classmethod
-    def _single_term(cls, points, i):
-        the_term = Polynomial([1])
+    def _single_term(cls, points, i, modulus):
+        the_term = ModPolynomial([1], modulus)
         xi, yi = points[i]
 
         for j, p in enumerate(points):
@@ -36,11 +38,15 @@ class Polynomial:
                 continue
 
             xj = p[0]
-            the_term = the_term * Polynomial([-xj / (xi - xj), 1 / (xi - xj)])
-        return the_term * Polynomial([yi])
+            # The coefficients are wrapped in the mod.Mod
+            # class so we don't have to put '%' everywhere
+            t0 = modular_div(-xj, xi - xj, modulus)
+            t1 = modular_div(1, xi - xj, modulus)
+            the_term = the_term * ModPolynomial([t0, t1], modulus)
+        return the_term * ModPolynomial([Mod(yi, modulus)], modulus)
 
     @classmethod
-    def interpolating(cls, points):
+    def interpolating(cls, points, modulus):
         """Construct the interpolating polynomial for
         points, which is an iterable of (x, y) tuples
 
@@ -54,33 +60,27 @@ class Polynomial:
         if len(set(x_values)) < len(x_values):
             raise ValueError('Not all x values are distinct.')
 
-        terms = [Polynomial._single_term(points, i) for i in range(len(points))]
-        return sum(terms, ZERO)
+        terms = [ModPolynomial._single_term(points, i, modulus) for i in range(len(points))]
+        return sum(terms, ModPolynomial([], modulus))
 
-    def __init__(self, coefficients):
-        self._coefficients = strip_list(coefficients, 0)
-        if not self._coefficients:
-            self._coefficients = [0]
+    def __init__(self, coefficients, modulus):
+        self.modulus = modulus
+        coefficients = strip_list(coefficients, 0)
+        if not coefficients:
+            self._coefficients = [Mod(0, self.modulus)]
+        else:
+            self._coefficients = [Mod(c, self.modulus) for c in coefficients]
 
     def eval_at(self, x):
         """Evaluate at x using Horner's method"""
         total = 0
         for e in reversed(self._coefficients):
             total = total*x + e
-        return total
-
-    def eval_modp(self, x, p):
-        """Evaluate the polynomial at x,
-        computing modulo p"""
-
-        total = 0
-        for e in reversed(self._coefficients):
-            total = (total*x % p) + e
-        return total % p
+        return int(total)
 
     def add(self, other):
-        new_coeffs = [sum(pair) for pair in itertools.zip_longest(self, other, fillvalue=0)]
-        return Polynomial(new_coeffs)
+        new_coeffs = [sum(p) for p in itertools.zip_longest(self, other, fillvalue=0)]
+        return ModPolynomial(new_coeffs, self.modulus)
 
     def sub(self, other):
         return self.add(-other)
@@ -91,7 +91,8 @@ class Polynomial:
             for j, b in enumerate(other):
                 new_coefficients[i+j] += a*b
 
-        return Polynomial(strip_list(new_coefficients, 0))
+        stripped = strip_list(new_coefficients, 0)
+        return ModPolynomial(stripped, self.modulus)
 
     def len(self):
         return len(self._coefficients)
@@ -112,12 +113,10 @@ class Polynomial:
         return self.sub(other)
 
     def __neg__(self):
-        return Polynomial([-c for c in self._coefficients])
+        return ModPolynomial([-c for c in self._coefficients])
 
     def __add__(self, other):
         return self.add(other)
 
     def __call__(self, x):
         return self.eval_at(x)
-
-ZERO = Polynomial([])

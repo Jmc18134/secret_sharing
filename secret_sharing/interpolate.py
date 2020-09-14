@@ -4,7 +4,7 @@ import secrets
 from flask import Blueprint, flash, g, redirect, render_template, request, session, url_for
 from werkzeug.exceptions import abort
 
-from secret_sharing.polynomial import Polynomial
+from secret_sharing.polynomial import ModPolynomial
 
 bp = Blueprint('interp', __name__, url_prefix='/interpolator')
 
@@ -31,24 +31,21 @@ def evaluate():
     # must be greater than or equal to one
 
     error = ''
-    if not points:
-        error = 'You must supply at least one point.'
-    if not x:
-        error = 'You must supply an x value.'
+    if not (points or x or modulus):
+        error = 'All fields must be filled in.'
 
     parsed = [pair.split(',') for pair in points.split(' ')]
     try:
         coords = [(int(a), int(b)) for (a, b) in parsed]
         x = int(x)
-        if modulus:
-            modulus = int(modulus)
+        modulus = int(modulus)
     except ValueError:
         error = 'Invalid values. Please check your input.'
     else:
         xs = [a for a, b in coords]
         if not is_ascending(xs):
             error = 'X values must be ascending.'
-        if isinstance(modulus, int) and modulus < 1:
+        if modulus < 1:
             error = 'The modulus cannot be less than 1.'
 
     if error:
@@ -59,19 +56,13 @@ def evaluate():
 
     # Generate the interpolating polynomial for the supplied coords,
     # And evaluate it at the given x and computing with the given modulus
-    lagrange = Polynomial.interpolating(coords)
-    if modulus:
-        result = lagrange.eval_modp(x, modulus)
-    else:
-        result = lagrange(x)
-
-    import sys
-    print(coords)
-    sys.stdout.flush()
+    lagrange = ModPolynomial.interpolating(coords, modulus)
+    result = lagrange(x)
 
     # The template needs the first (x-less) coefficient of the polynomial
     # and then the rest of the coefficients as a list
-    coef = lagrange.coefficients()
+    # They need to be converted from mod.Mod to regular ints
+    coef = [int(c) for c in lagrange.coefficients()]
     base, remaining = coef[0], coef[1:]
 
     return render_template('interp_eval.html', n=len(coords), x=x, base=base,

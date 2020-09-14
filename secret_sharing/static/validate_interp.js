@@ -66,7 +66,7 @@ function validate(ev) {
   var err_msg = document.getElementById("input_error");
   var valid = true;
 
-  if (points == "" || xval == "") {
+  if (points == "" || xval == "" || modulus == "") {
     err_msg.innerHTML = "All fields must be filled in.";
     valid = false;
   }
