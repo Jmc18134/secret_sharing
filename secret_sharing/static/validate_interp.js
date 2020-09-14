@@ -1,5 +1,16 @@
 document.getElementById("interp").addEventListener("submit", validate);
+/*
+document.getElementById("show-button").addEventListener("click", thingy);
+document.getElementById("eval-button").addEventListener("click", thingy);
 
+function setWhoClicked(ev) {
+	this.form.submitted=this.value;
+}
+
+function display_poly(ev) {
+	console.log(ev.target);
+}
+*/
 function checkAscending(xs, err) {
   var i;
   for (i=1; i<xs.length; i++) {
