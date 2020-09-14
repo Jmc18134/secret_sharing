@@ -44,6 +44,7 @@ form {
 form label {
 	font-family: monospace;
 	font-size: 20px;
+	padding-bottom: 8px;
 }
 
 form input[type=number] {
