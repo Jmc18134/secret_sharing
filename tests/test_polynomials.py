@@ -2,39 +2,31 @@ from secret_sharing.polynomial import *
 
 import pytest
 
-@pytest.mark.parametrize("coefficients,x,expected", 
+@pytest.mark.parametrize("coefficients,mod,x,expected", 
         [
-            ([42, 1, 1, 1], 0, 42),
-            ([1,2,3], 2, 17),
-            ([0, 0, 0], 1, 0),
-            ([1, 2, -5, -6], 2, -63),
-            ([], 99, 0)
+            ([42,1,1,1], 50, 0, 42),
+            ([1,2,3], 20, 2, 17),
+            ([0, 2, 3], 7, 9, 2),
+            ([1, 0, 0, 1], 6, 3, 4),
+            ([0, 0, 0], 10, 0, 0),
+            ([1, 2, -5, -6], 32, 2, 1),
+            ([], 99, 50, 0)
         ])
-def test_evaluation(coefficients, x, expected):
-    tester = Polynomial(coefficients)
-    assert tester.eval_at(x) == expected
+def test_evaluation(coefficients, mod, x, expected):
+    tester = ModPolynomial(coefficients, mod)
+    assert tester(x) == expected
 
-@pytest.mark.parametrize("points", [
-    [(0.0, 0.0)],
-    [(0.0, 0.0), (1.0, 1.0)],
-    [(2.0, 2.0), (4.0, 1.0), (5.0, 3.0)],
-    ])
-def test_interpolation(points):
-    tester = Polynomial.interpolating(points)
-    for (x,y) in points:
-        assert tester(x) == pytest.approx(y)
-
-@pytest.mark.parametrize("first,second,result",
+@pytest.mark.parametrize("first,second,mod,result",
         [
-            ([1, 1, 1], [1, 1, 1], [2, 2, 2]),
-            ([1, 1, 1], [1, 1, 1, 1], [2, 2, 2, 1]),
-            ([1, 1, 1], [1, -1, 1], [2, 0, 2]),
-            ([0], [1, 1, 1], [1, 1, 1]),
-            ([0], [0], [0]),
+            ([1, 1, 1], [1, 1, 1], 3, [2, 2, 2]),
+            ([1, 1, 1], [1, 1, 1, 1], 3, [2, 2, 2, 1]),
+            ([1, 1, 1], [1, -2, 1], 7, [2, 6, 2]),
+            ([0], [1, 1, 1], 2, [1, 1, 1]),
+            ([0], [0], 2, [0]),
         ])
-def test_addition(first, second, result):
-    a = Polynomial(first)
-    b = Polynomial(second)
+def test_addition(first, second, mod, result):
+    a = ModPolynomial(first, mod)
+    b = ModPolynomial(second, mod)
     assert (a + b).coefficients() == result
 
 @pytest.mark.parametrize("xs,expected",
@@ -46,33 +38,25 @@ def test_addition(first, second, result):
 def test_list_strip(xs, expected):
     assert strip_list(xs, 0) == expected
 
-@pytest.mark.parametrize("first,second,result",
+@pytest.mark.parametrize("first,second,mod,result",
         [
-            ([1, 1, 1], [1, 1, 1], [0]),
-            ([1, 1, 1], [2, 2, 2], [-1, -1, -1]),
-            ([1, 1, 1], [1, 1, 1, 2], [0, 0, 0, -2]),
-            ([0], [0], [0]),
+            ([1, 1, 1], [1, 1, 1], 2, [0]),
+            ([1, 1, 1], [2, 2, 2], 14, [13, 13, 13]),
+            ([1, 1, 1], [1, 1, 1, 2], 7, [0, 0, 0, 5]),
+            ([0], [0], 3, [0]),
         ])
-def test_subtraction(first, second, result):
-    a = Polynomial(first)
-    b = Polynomial(second)
+def test_subtraction(first, second, mod, result):
+    a = ModPolynomial(first, mod)
+    b = ModPolynomial(second, mod)
     assert (a - b).coefficients() == result
 
-@pytest.mark.parametrize("ys,x,modulus,result",
-        [
-            ([0, 2, 3], 9, 7, 2),
-            ([1, 0, 0, 1], 3, 6, 4),
-        ])
-def test_modeval(ys, x, modulus, result):
-    p = Polynomial(ys)
-    assert p.eval_modp(x, modulus) == result
-
-
-@pytest.mark.parametrize("ys,p,r",
+@pytest.mark.parametrize("ys,mod,result",
         [
             ([(1,6), (2, 2), (3, 6)], 11, 7),
             ([(1,10), (2, 5), (3, 8)], 13, 10),
+            ([(1, 145), (2, 85), (3, 37)], 197, 20),
+            ([(1, 39), (2, 36), (3, 13), (4, 40), (5,39)], 41, 9)
         ])
-def test_modinterp(ys, p, r):
-    poly = Polynomial.interpolating(ys)
-    assert poly.eval_modp(0, p) == r
+def test_secretfinding(ys, mod, result):
+    poly = ModPolynomial.interpolating(ys, mod)
+    assert poly(0) == result

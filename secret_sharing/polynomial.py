@@ -73,7 +73,8 @@ class ModPolynomial:
 
     def eval_at(self, x):
         """Evaluate at x using Horner's method"""
-        total = 0
+        x = Mod(x, self.modulus)
+        total = Mod(0, self.modulus)
         for e in reversed(self._coefficients):
             total = total*x + e
         return int(total)
@@ -113,7 +114,7 @@ class ModPolynomial:
         return self.sub(other)
 
     def __neg__(self):
-        return ModPolynomial([-c for c in self._coefficients])
+        return ModPolynomial([-c for c in self._coefficients], self.modulus)
 
     def __add__(self, other):
         return self.add(other)
