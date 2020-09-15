@@ -6,6 +6,7 @@ iniconfig==1.0.1
 itsdangerous==1.1.0
 Jinja2==2.11.2
 MarkupSafe==1.1.1
+mod==0.3.0
 more-itertools==8.5.0
 packaging==20.4
 pluggy==0.13.1
