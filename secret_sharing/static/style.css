@@ -71,6 +71,8 @@ form div.input_labels label {
 
 form div.input_boxes input {
 	display: block;
+	margin-top: 2px;
+	margin-bottom: 2px
 }
 
 span.symbol {
