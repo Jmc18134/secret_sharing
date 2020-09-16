@@ -8,8 +8,24 @@ from secret_sharing.polynomial import ModPolynomial
 
 bp = Blueprint('encode', __name__)
 
+def is_prime(n):
+    if n <= 3:
+        return n > 1
+    if n % 2 == 0 or n % 3 == 0:
+        return False
+
+    i=5
+    while (i**2 <= n):
+        if n % i == 0 or n % (i + 2) == 0:
+            return False
+        i += 6
+    return True
+
 def get_prime(n):
-    return 197
+    n += 1
+    while not is_prime(n):
+        n += 1
+    return n
 
 @bp.route('/', methods=("GET",))
 def encode_secret():
@@ -44,7 +60,7 @@ def show_results():
         return redirect(url_for('encode.encode_secret'))
 
     # Get a prime larger than the secret and the number of shares
-    prime = get_prime(max(n,k))
+    prime = get_prime(max(n, secret))
     # Generate random coefficients less than the prime modulus
     coefficients = [secrets.randbelow(prime) for _ in range(k-1)]
     coefficients.insert(0, secret)
