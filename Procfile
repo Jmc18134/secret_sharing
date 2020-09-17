@@ -1,1 +1,1 @@
-web: gunicorn secret_sharing.wsgi:app
+web: gunicorn secret_sharing.wsgi:app --log-file -
