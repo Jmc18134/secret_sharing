@@ -1,14 +1,13 @@
-import functools
-import secrets
+"""The endpoints and functions which handle interpolating and evaluating a given set of points."""
 
-from flask import Blueprint, flash, g, redirect, render_template, request, session, url_for
-from werkzeug.exceptions import abort
+from flask import Blueprint, flash, redirect, render_template, request, url_for
 
 from secret_sharing.polynomial import ModPolynomial
 
 bp = Blueprint('interp', __name__, url_prefix='/interpolator')
 
 def is_ascending(xs):
+    # pylint: disable=missing-docstring
     for i in range(1, len(xs)):
         if xs[i] < xs[i-1]:
             return False
@@ -16,10 +15,12 @@ def is_ascending(xs):
 
 @bp.route('/', methods=("GET", "POST"))
 def interpolate():
+    """The basic interpolation page."""
     return render_template('interpolate.html')
 
 @bp.route('/eval', methods=("POST",))
 def evaluate():
+    """The results page for a evaluation/interpolation of points."""
     points = request.form['points']
     modulus = request.form['modulus']
     x = request.form['x-val']

@@ -5,6 +5,7 @@ import itertools
 from mod import Mod
 
 def extended_gcd(a, b):
+    """Euclids extended gcd algorithm."""
     x = 0
     y = 1
     last_x = 1
@@ -18,18 +19,24 @@ def extended_gcd(a, b):
     return last_x, last_y
 
 def modular_div(a, b, p):
+    """Modular division of a and b mod p,
+    using the modular multiplicative inverse."""
     inv, _ = extended_gcd(b, p)
     return a * inv
 
 def strip_list(xs, e):
+    """Get rid of all rightmost 'e' in
+    the given list."""
     p = len(xs) - 1
     while p >= 0 and xs[p] == e:
         p -= 1
     return xs[:p+1]
 
 class ModPolynomial:
+    """A polynomial constructed and evaluated mod p."""
     @classmethod
     def _single_term(cls, points, i, modulus):
+        """Get the i-th term of the lagrange polynomial for the given points (mod p)."""
         the_term = ModPolynomial([1], modulus)
         xi, yi = points[i]
 
@@ -48,11 +55,7 @@ class ModPolynomial:
     @classmethod
     def interpolating(cls, points, modulus):
         """Construct the interpolating polynomial for
-        points, which is an iterable of (x, y) tuples
-
-        If p is not None, the polynomial
-        will be constructed modulo p
-        """
+        points, which is an iterable of (x, y) tuples."""
         if not points:
             raise ValueError('Must provide at least one point.')
 
@@ -80,13 +83,16 @@ class ModPolynomial:
         return int(total)
 
     def add(self, other):
+        """Add two polynomials."""
         new_coeffs = [sum(p) for p in itertools.zip_longest(self, other, fillvalue=0)]
         return ModPolynomial(new_coeffs, self.modulus)
 
     def sub(self, other):
+        """Subtract two polynomials."""
         return self.add(-other)
 
     def multiply(self, other):
+        """Multiply two polynomials."""
         new_coefficients = [0] * (len(self) + len(other) - 1)
         for i, a in enumerate(self):
             for j, b in enumerate(other):
@@ -96,9 +102,11 @@ class ModPolynomial:
         return ModPolynomial(stripped, self.modulus)
 
     def len(self):
+        """Return the length, which is the polynomials degree + 1"""
         return len(self._coefficients)
 
     def coefficients(self):
+        """Return a list of the polynomials coefficients."""
         return list(self._coefficients)
 
     def __iter__(self):

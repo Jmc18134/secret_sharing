@@ -1,8 +1,11 @@
+"""A web app that implements Shamirs secret sharing."""
+
 import os
 
 from flask import Flask
 
 def create_app(test_config=None):
+    """Basic flask app making function."""
     app = Flask(__name__, instance_relative_config=True)
     # When deployed on heroku, this env will be set, otherwise we just use a dummy key
     secret = os.environ.get('FLASK_SECRET_KEY', 'dev')

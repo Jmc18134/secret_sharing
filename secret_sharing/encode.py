@@ -1,27 +1,29 @@
-import functools
+"""The endpoints and code that handle encoding a secret as a given number of shares."""
+
 import secrets
 
-from flask import Blueprint, flash, g, redirect, render_template, request, session, url_for
-from werkzeug.exceptions import abort
+from flask import Blueprint, flash, redirect, render_template, request, url_for
 
 from secret_sharing.polynomial import ModPolynomial
 
 bp = Blueprint('encode', __name__)
 
 def is_prime(n):
+    # pylint: disable=missing-docstring
     if n <= 3:
         return n > 1
     if n % 2 == 0 or n % 3 == 0:
         return False
 
-    i=5
-    while (i**2 <= n):
+    i = 5
+    while i**2 <= n:
         if n % i == 0 or n % (i + 2) == 0:
             return False
         i += 6
     return True
 
 def get_prime(n):
+    """Get the next prime that is larger than n."""
     n += 1
     while not is_prime(n):
         n += 1
@@ -29,10 +31,13 @@ def get_prime(n):
 
 @bp.route('/', methods=("GET",))
 def encode_secret():
+    """The endpoint for the main page."""
     return render_template('encode_secret.html')
 
 @bp.route('/results', methods=("POST",))
 def show_results():
+    """Encode the given secret as a k-degree polynomial,
+    and give out n shares of that secret."""
     n = request.form['shares']
     k = request.form['keys_required']
     secret = request.form['secret']
