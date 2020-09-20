@@ -42,8 +42,8 @@ http {
 			proxy_pass http://$upstream;
                         }
 
-                        location ~ \.(js|css)$ {
-                          root secret_sharing/static;
-                        }
+                location ~ \.(js|css)$ {
+                  #root secret_sharing/static;
+                }
 	}
 }
